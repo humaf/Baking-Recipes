@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
+import baking.strawbericreations.com.bakingrecipes.UserInterface.OnItemClickListener;
 
 /**
  * Created by redrose on 1/17/18.
@@ -17,13 +18,15 @@ import baking.strawbericreations.com.bakingrecipes.R;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
 
     private ArrayList<Recipe> recipeItemList = new ArrayList<Recipe>();
+    private OnItemClickListener onItemClickListener;
 
     public class RecipeHolder extends RecyclerView.ViewHolder {
         public TextView title;
+        private OnItemClickListener onItemClickListener;
 
         public RecipeHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
+            title = (TextView) view.findViewById(R.id.recipeText);
         }
     }
 
@@ -40,8 +43,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     @Override
     public void onBindViewHolder(RecipeHolder holder, int position) {
-        Recipe recipe = recipeItemList.get(position);
+    final    Recipe recipe = recipeItemList.get(position);
         holder.title.setText(recipe.getName());
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(recipe);
+            }
+        };
     }
 
     @Override
@@ -49,5 +58,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         Log.i("size",recipeItemList.toString());
         return recipeItemList.size();
     }
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
 
 }

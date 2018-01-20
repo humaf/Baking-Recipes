@@ -1,17 +1,23 @@
 package baking.strawbericreations.com.bakingrecipes.UserInterface;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Movie;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import baking.strawbericreations.com.bakingrecipes.Adapters.*;
+
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
 
@@ -40,6 +47,10 @@ public class RecipeFragment extends Fragment
 
     RecyclerView recyclerView;
 
+    Toolbar toolbar;
+
+  Bundle bundle;
+
     private List<Recipe> recipeList = new ArrayList<>();
 
     public RecipeFragment(){
@@ -51,20 +62,34 @@ public class RecipeFragment extends Fragment
 
         View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
 
+      //  toolbar =(Toolbar) rootView.findViewById(R.id.toolbar);
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_recipe);
-
-
-      //  adapter = new RecipeAdapter((ArrayList<Recipe>) recipeList);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
-
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
+
+
         RecipeDownload task = new RecipeDownload();
         task.execute(url);
       //  return inflater.inflate(R.layout.fragment_recipe, container, false);
         return rootView;
+    }
+
+    public Boolean isNetworkAvailable(Context context){
+
+        Boolean resultValue = false; // Initial Value
+
+        ConnectivityManager manager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()){
+            resultValue = true;
+        }
+
+        return resultValue;
     }
 
 
@@ -125,6 +150,7 @@ public class RecipeFragment extends Fragment
                 recipeList.add(item);
                 Log.i("recipeList",recipeList.toString());
         }
+
         }catch (JSONException e) {
          e.printStackTrace();
       }
@@ -134,6 +160,15 @@ public class RecipeFragment extends Fragment
           adapter = new RecipeAdapter((ArrayList<Recipe>) result);
           recyclerView.setAdapter(adapter);
           adapter.notifyDataSetChanged();
+
+          adapter.setOnItemClickListener(new OnItemClickListener() {
+              @Override
+              public void onItemClick(Recipe item) {
+             Intent RecipeIntent = new Intent(getActivity(),RecipeDetailActivity.class);
+               getActivity().startActivity(RecipeIntent);
+                  Log.i("intent starting",)
+              }
+          });
 
         }
     }

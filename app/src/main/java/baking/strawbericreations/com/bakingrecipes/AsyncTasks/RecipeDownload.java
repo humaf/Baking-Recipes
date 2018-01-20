@@ -32,7 +32,7 @@ import baking.strawbericreations.com.bakingrecipes.R;
 /*
 public class RecipeDownload  extends AsyncTask<String, Void, ArrayList<Recipe>> {
      private ArrayList<Recipe> recipeList;
-    RecyclerView myRecycler;
+   // RecyclerView myRecycler;
     RecipeAdapter adapter;
 
     @Override
@@ -95,10 +95,14 @@ public class RecipeDownload  extends AsyncTask<String, Void, ArrayList<Recipe>> 
     }
 
   protected void onPostExecute(ArrayList<Recipe> result) {
-       myRecycler.setAdapter(adapter);
+
+      adapter = new RecipeAdapter((ArrayList<Recipe>) result);
+      myRecycler.setAdapter(adapter);
+      adapter.notifyDataSetChanged();
+
     }
 }
-
 */
+
 
 
