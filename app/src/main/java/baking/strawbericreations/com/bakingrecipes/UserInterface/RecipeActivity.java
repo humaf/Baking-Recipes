@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import baking.strawbericreations.com.bakingrecipes.AsyncTasks.RecipeDownload;
 import baking.strawbericreations.com.bakingrecipes.R;
 
 public class RecipeActivity extends AppCompatActivity {
@@ -32,13 +31,13 @@ public class RecipeActivity extends AppCompatActivity {
         Toast networkerror = Toast.makeText(this, "Please connect to the INTERNET", Toast.LENGTH_LONG);
 
 
-    if (!isNetworkAvailable(this) == false) {
+/*    if (!isNetworkAvailable(this) == false) {
 
           RecipeDownload task = new RecipeDownload();
            task.execute(url);
        }
        else
-         networkerror.show();
+         networkerror.show();*/
     }
 
 

@@ -3,6 +3,8 @@ package baking.strawbericreations.com.bakingrecipes.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,8 +16,9 @@ public class Recipe implements Serializable {
 
     private Integer id;
     private String name;
-    private List<Ingredients> ingredients = null;
-    private List<Steps> steps = null;
+    private JSONArray ingredients = null;
+    private JSONArray steps = null;
+
     private Integer servings;
     private String image;
 
@@ -45,21 +48,21 @@ public class Recipe implements Serializable {
 
 
 
-    public List<Ingredients> getIngredients() {
+    public JSONArray getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredients> ingredients) {
+    public void setIngredients(JSONArray ingredients) {
         this.ingredients = ingredients;
     }
 
 
 
-    public List<Steps> getSteps() {
+    public JSONArray getSteps() {
         return steps;
     }
 
-    public void setSteps(List<Steps> steps) {
+    public void setSteps(JSONArray steps) {
         this.steps = steps;
     }
 

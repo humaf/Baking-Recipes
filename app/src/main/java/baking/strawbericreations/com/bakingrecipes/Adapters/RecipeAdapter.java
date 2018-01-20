@@ -1,13 +1,12 @@
 package baking.strawbericreations.com.bakingrecipes.Adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
 
@@ -18,7 +17,6 @@ import baking.strawbericreations.com.bakingrecipes.R;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
 
     private ArrayList<Recipe> recipeItemList = new ArrayList<Recipe>();
-
 
     public class RecipeHolder extends RecyclerView.ViewHolder {
         public TextView title;
@@ -48,6 +46,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     @Override
     public int getItemCount() {
+        Log.i("size",recipeItemList.toString());
         return recipeItemList.size();
     }
 

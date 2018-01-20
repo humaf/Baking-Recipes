@@ -30,7 +30,9 @@ import baking.strawbericreations.com.bakingrecipes.Adapters.*;
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
 
-public class RecipeFragment extends Fragment {
+public class RecipeFragment extends Fragment
+
+{
 
     String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
@@ -40,48 +42,34 @@ public class RecipeFragment extends Fragment {
 
     private List<Recipe> recipeList = new ArrayList<>();
 
-
     public RecipeFragment(){
 
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_recipe,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_recipe);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_recipe);
 
 
-         adapter = new RecipeAdapter((ArrayList<Recipe>) recipeList);
+      //  adapter = new RecipeAdapter((ArrayList<Recipe>) recipeList);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
-        recyclerView.setAdapter(adapter);
+
         recyclerView.setLayoutManager(mLayoutManager);
-
         recyclerView.setHasFixedSize(true);
-
-
-
-        return inflater.inflate(R.layout.fragment_recipe, container, false);
+        RecipeDownload task = new RecipeDownload();
+        task.execute(url);
+      //  return inflater.inflate(R.layout.fragment_recipe, container, false);
+        return rootView;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-      //  RecipeDownload task = new RecipeDownload();
-        //   task.execute(url);
-
-    }
-/*
     public class RecipeDownload  extends AsyncTask<String, Void, ArrayList<Recipe>> {
         private ArrayList<Recipe> recipeList;
-
-
 
         @Override
         protected ArrayList<Recipe> doInBackground(String... urls) {
@@ -116,32 +104,38 @@ public class RecipeFragment extends Fragment {
             }
 
             try {
-                JSONObject response = new JSONObject(result);
-                JSONArray results = response.optJSONArray("results");
-                recipeList = new ArrayList<Recipe>();
-                for (int i = 0; i < results.length(); i++) {
-                    JSONObject res = results.optJSONObject(i);
-                    Recipe item = new Recipe();
-                    String recipeName = (res.optString("name"));
-                    Log.i("json data",recipeName);
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return recipeList;
+                 JSONArray results = new JSONArray(result);
+            recipeList = new ArrayList<Recipe>();
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject res = results.optJSONObject(i);
+                Recipe item = new Recipe();
+                JSONArray ing = new JSONArray();
+                JSONArray steps = new JSONArray();
+                int id =(res.optInt("id"));
+                item.setId(id);
+                String recipeName = (res.optString("name"));
+                Log.i("nameeeeeee",recipeName);
+                item.setName(recipeName);
+                 ing = (res.optJSONArray("ingredients"));
+                Log.i("ingggge",ing.toString());
+                item.setIngredients(ing);
+                steps = (res.optJSONArray("steps"));
+                item.setSteps(steps);
+                Log.i("stepps",steps.toString());
+                recipeList.add(item);
+                Log.i("recipeList",recipeList.toString());
         }
-
+        }catch (JSONException e) {
+         e.printStackTrace();
+      }
+        return recipeList;
+}
       protected void onPostExecute(ArrayList<Recipe> result) {
-
+          adapter = new RecipeAdapter((ArrayList<Recipe>) result);
+          recyclerView.setAdapter(adapter);
           adapter.notifyDataSetChanged();
 
         }
     }
-*/
+
     }
-
-
-
-

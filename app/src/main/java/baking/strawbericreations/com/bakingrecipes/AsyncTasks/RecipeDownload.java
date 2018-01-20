@@ -13,20 +13,23 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import baking.strawbericreations.com.bakingrecipes.Adapters.RecipeAdapter;
 import baking.strawbericreations.com.bakingrecipes.Model.Ingredients;
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
+import baking.strawbericreations.com.bakingrecipes.Model.Steps;
 import baking.strawbericreations.com.bakingrecipes.R;
 
 /**
  * Created by redrose on 1/17/18.
  */
-
+/*
 public class RecipeDownload  extends AsyncTask<String, Void, ArrayList<Recipe>> {
      private ArrayList<Recipe> recipeList;
     RecyclerView myRecycler;
@@ -63,36 +66,39 @@ public class RecipeDownload  extends AsyncTask<String, Void, ArrayList<Recipe>> 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        JSONObject response = null;
-      //  try {
-           // response = new JSONObject(result);
-            JSONArray results = response.optJSONArray("Value");
-            Log.i("json res", results.toString());
+        try {
+         JSONArray results = new JSONArray(result);
             recipeList = new ArrayList<Recipe>();
             for (int i = 0; i < results.length(); i++) {
                 JSONObject res = results.optJSONObject(i);
                 Recipe item = new Recipe();
+                JSONArray ing = new JSONArray();
+                JSONArray steps = new JSONArray();
+                int id =(res.optInt("id"));
+                item.setId(id);
                 String recipeName = (res.optString("name"));
+                Log.i("nameeeeeee",recipeName);
                 item.setName(recipeName);
-                Log.i("json data", recipeName);
+                 ing = (res.optJSONArray("ingredients"));
+                Log.i("ingggge",ing.toString());
+                item.setIngredients(ing);
+                steps = (res.optJSONArray("steps"));
+                item.setSteps(steps);
+                Log.i("stepps",steps.toString());
+                recipeList.add(item);
+                Log.i("recipeList",recipeList.toString());
             }
-     //   }catch (JSONException e) {
-       //     e.printStackTrace();
-       // }
-
-
-
+      }catch (JSONException e) {
+         e.printStackTrace();
+      }
         return recipeList;
     }
 
-
-   protected void onPostExecute(ArrayList<Recipe> result) {
-
+  protected void onPostExecute(ArrayList<Recipe> result) {
        myRecycler.setAdapter(adapter);
     }
 }
 
-
+*/
 
 
