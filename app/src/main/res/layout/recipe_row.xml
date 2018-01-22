@@ -19,6 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
+        android:clickable="false"
+        android:focusable="false"
         />
     </LinearLayout>
 

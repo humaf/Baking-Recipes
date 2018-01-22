@@ -45,6 +45,8 @@ public class RecipeFragment extends Fragment
 
     private RecipeAdapter adapter;
 
+    private Context mContext;
+
     RecyclerView recyclerView;
 
     Toolbar toolbar;
@@ -157,18 +159,20 @@ public class RecipeFragment extends Fragment
         return recipeList;
 }
       protected void onPostExecute(ArrayList<Recipe> result) {
-          adapter = new RecipeAdapter((ArrayList<Recipe>) result);
+          adapter = new RecipeAdapter(getContext(),(ArrayList<Recipe>) result);
           recyclerView.setAdapter(adapter);
           adapter.notifyDataSetChanged();
 
-          adapter.setOnItemClickListener(new OnItemClickListener() {
+        /*  adapter.setOnItemClickListener(new OnItemClickListener() {
               @Override
               public void onItemClick(Recipe item) {
              Intent RecipeIntent = new Intent(getActivity(),RecipeDetailActivity.class);
-               getActivity().startActivity(RecipeIntent);
-                  Log.i("intent starting",)
+              getActivity().startActivity(RecipeIntent);
+
+
               }
           });
+          */
 
         }
     }
