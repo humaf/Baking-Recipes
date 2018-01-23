@@ -2,10 +2,8 @@ package baking.strawbericreations.com.bakingrecipes.UserInterface;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Movie;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,13 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,16 +26,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import baking.strawbericreations.com.bakingrecipes.Adapters.*;
-
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
 
 public class RecipeFragment extends Fragment
 
 {
-
     String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     private RecipeAdapter adapter;
@@ -51,7 +43,7 @@ public class RecipeFragment extends Fragment
 
     Toolbar toolbar;
 
-  Bundle bundle;
+    Bundle bundle;
 
     private List<Recipe> recipeList = new ArrayList<>();
 
@@ -90,7 +82,6 @@ public class RecipeFragment extends Fragment
         if (networkInfo != null && networkInfo.isConnected()){
             resultValue = true;
         }
-
         return resultValue;
     }
 
@@ -160,21 +151,17 @@ public class RecipeFragment extends Fragment
 }
       protected void onPostExecute(ArrayList<Recipe> result) {
           adapter = new RecipeAdapter(getContext(),(ArrayList<Recipe>) result);
+          adapter.setOnItemClickListener(new OnItemClickListener() {
+               @Override
+               public void onItemClick(View view, int position) {
+                   Intent RecipeIntent = new Intent(getActivity(),RecipeDetailActivity.class);
+                   getActivity().startActivity(RecipeIntent);
+               }
+
+        });
           recyclerView.setAdapter(adapter);
           adapter.notifyDataSetChanged();
-
-        /*  adapter.setOnItemClickListener(new OnItemClickListener() {
-              @Override
-              public void onItemClick(Recipe item) {
-             Intent RecipeIntent = new Intent(getActivity(),RecipeDetailActivity.class);
-              getActivity().startActivity(RecipeIntent);
-
-
-              }
-          });
-          */
-
-        }
+      }
     }
 
     }

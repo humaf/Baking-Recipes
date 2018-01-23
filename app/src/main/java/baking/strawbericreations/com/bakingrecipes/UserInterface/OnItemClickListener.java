@@ -1,16 +1,11 @@
 package baking.strawbericreations.com.bakingrecipes.UserInterface;
 
-import java.util.ArrayList;
-
-import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
+import android.view.View;
 
 /**
  * Created by redrose on 1/20/18.
  */
 
 public interface OnItemClickListener {
-    void onItemClick(Recipe item);
-
-
-    
+    void onItemClick(View view, int position);
 }

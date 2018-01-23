@@ -1,31 +1,29 @@
 package baking.strawbericreations.com.bakingrecipes.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.OnItemClickListener;
+import baking.strawbericreations.com.bakingrecipes.UserInterface.RecipeDetailActivity;
 
 /**
  * Created by redrose on 1/17/18.
  */
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
-
     private ArrayList<Recipe> recipeItemList = new ArrayList<Recipe>();
     private OnItemClickListener onItemClickListener;
     private Context mContext;
     private  static Recipe item;
-
-
 
     public RecipeAdapter(Context context, ArrayList<Recipe> recipeItemList) {
         this.recipeItemList = recipeItemList;
@@ -41,23 +39,19 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     @Override
     public void onBindViewHolder(RecipeHolder holder, int position) {
-    final    Recipe recipe = recipeItemList.get(position);
+       Recipe recipe = recipeItemList.get(position);
         holder.title.setText(recipe.getName());
+      Log.i("-----------",recipe.getName().toString());
         holder.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(Recipe item) {
-                Toast toast = Toast.makeText(mContext,"item clicked",Toast.LENGTH_LONG);
+            public void onItemClick(View view, int position) {
+                System.out.println("gottcha!!");
+               // Toast.makeText(mContext,"clicked ",Toast.LENGTH_LONG).show();
+               Intent intent = new Intent(mContext, RecipeDetailActivity.class);
+                mContext.startActivity(intent);
             }
-        });
-
-     /*   View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.onItemClick(recipe);
-            }
-        };*/
+    });
     }
-
     @Override
     public int getItemCount() {
         Log.i("size",recipeItemList.toString());
@@ -73,12 +67,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     public  static  class RecipeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView title;
+        public int position;
         private OnItemClickListener onItemClickListener;
 
         public RecipeHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.recipeText);
-            view.setOnClickListener(this);
+            title.setOnClickListener(this);
         }
 
         public void setOnItemClickListener(OnItemClickListener iListener){
@@ -86,7 +81,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         }
         @Override
         public void onClick(View view) {
-            onItemClickListener.onItemClick(item);
+            onItemClickListener.onItemClick(view,getAdapterPosition());
         }
     }
 

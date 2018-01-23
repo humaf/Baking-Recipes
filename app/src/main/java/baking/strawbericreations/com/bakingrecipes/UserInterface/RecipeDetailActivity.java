@@ -1,8 +1,15 @@
 package baking.strawbericreations.com.bakingrecipes.UserInterface;
 
-/**
- * Created by redrose on 1/19/18.
- */
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
-public class RecipeDetailActivity {
+import baking.strawbericreations.com.bakingrecipes.R;
+
+public class RecipeDetailActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recipe_detail_acticity);
+    }
 }
