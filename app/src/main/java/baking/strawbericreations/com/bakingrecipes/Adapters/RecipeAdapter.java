@@ -2,6 +2,7 @@ package baking.strawbericreations.com.bakingrecipes.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
@@ -39,15 +41,19 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     @Override
     public void onBindViewHolder(RecipeHolder holder, int position) {
-       Recipe recipe = recipeItemList.get(position);
+     final  Recipe recipe = recipeItemList.get(position);
         holder.title.setText(recipe.getName());
       Log.i("-----------",recipe.getName().toString());
         holder.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 System.out.println("gottcha!!");
-               // Toast.makeText(mContext,"clicked ",Toast.LENGTH_LONG).show();
-               Intent intent = new Intent(mContext, RecipeDetailActivity.class);
+                // Toast.makeText(mContext,"clicked ",Toast.LENGTH_LONG).show();
+             final  Intent intent = new Intent(mContext, RecipeDetailActivity.class);
+
+                intent.putExtra("Recipe name",recipe.getName());
+                intent.putExtra("Ingredients", recipe.getIngredients().toString());
+                intent.putExtra("Steps",recipe.getSteps().toString());
                 mContext.startActivity(intent);
             }
     });

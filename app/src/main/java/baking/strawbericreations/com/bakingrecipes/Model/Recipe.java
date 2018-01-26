@@ -46,8 +46,6 @@ public class Recipe implements Serializable {
         this.name = name;
     }
 
-
-
     public JSONArray getIngredients() {
         return ingredients;
     }
@@ -56,8 +54,6 @@ public class Recipe implements Serializable {
         this.ingredients = ingredients;
     }
 
-
-
     public JSONArray getSteps() {
         return steps;
     }
@@ -65,8 +61,6 @@ public class Recipe implements Serializable {
     public void setSteps(JSONArray steps) {
         this.steps = steps;
     }
-
-
 
     public Integer getServings() {
         return servings;

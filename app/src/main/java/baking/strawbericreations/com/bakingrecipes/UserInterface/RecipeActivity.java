@@ -21,6 +21,8 @@ import baking.strawbericreations.com.bakingrecipes.R;
 
 public class RecipeActivity extends AppCompatActivity {
     static String SELECTED_RECIPES="Selected_Recipes";
+
+    public static String ALL_RECIPES="All_Recipes";
     Toolbar toolbar;
     String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
@@ -33,8 +35,6 @@ public class RecipeActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle("Baking Recipe");
-
-
     }
 
 }
