@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
+
 
 import baking.strawbericreations.com.bakingrecipes.R;
 
@@ -14,16 +14,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
     static String STACK_RECIPE_DETAIL="STACK_RECIPE_DETAIL";
     static String STACK_RECIPE_STEP_DETAIL="STACK_RECIPE_STEP_DETAIL";
     Bundle extras;
-  //  TextView tv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_activity);
 
-   //     tv=(TextView)findViewById(R.id.dtv);
-
         if (savedInstanceState == null) {
             extras = getIntent().getExtras();
+            int id = extras.getInt("id");
             recipe_name = extras.getString("Recipe name");
             Log.i("Recipe Name", recipe_name);
             String Ingredients = (String) extras.getSerializable("Ingredients");
@@ -31,10 +30,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
             String Steps = (String) extras.getSerializable("Steps");
             Log.i("List of Steps", Steps);
 
-         //   Intent fragIntent = new Intent(this,DetailFragment.class);
 
-          final DetailFragment fragment1 = new DetailFragment();
+            final DetailFragment fragment1 = new DetailFragment();
             fragment1.setArguments(extras);
+            Log.i("Extras coming in frag",extras.toString());
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container,fragment1).addToBackStack(STACK_RECIPE_DETAIL)
@@ -52,7 +51,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("Title",recipe_name);
+        outState.putString("Recipe name",recipe_name);
         Log.i("title",recipe_name);
     }
 

@@ -42,17 +42,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     @Override
     public void onBindViewHolder(RecipeHolder holder, int position) {
      final  Recipe recipe = recipeItemList.get(position);
+       System.out.println("------------------------" + position);
+
         holder.title.setText(recipe.getName());
       Log.i("-----------",recipe.getName().toString());
         holder.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 System.out.println("gottcha!!");
-                // Toast.makeText(mContext,"clicked ",Toast.LENGTH_LONG).show();
-             final  Intent intent = new Intent(mContext, RecipeDetailActivity.class);
+                final  Intent intent = new Intent(mContext, RecipeDetailActivity.class);
 
                 intent.putExtra("Recipe name",recipe.getName());
+                intent.putExtra("Id",recipe.getId());
+                Log.i("ID",recipe.getId().toString());
                 intent.putExtra("Ingredients", recipe.getIngredients().toString());
+                Log.i("ing adpater ",recipe.getIngredients().toString());
                 intent.putExtra("Steps",recipe.getSteps().toString());
                 mContext.startActivity(intent);
             }

@@ -28,6 +28,7 @@ public class DetailFragment extends Fragment {
     RecyclerView detailRecycler;
     TextView detailtext;
     static String STACK_RECIPE_DETAIL = "STACK_RECIPE_DETAIL";
+    ArrayList<Ingredients> in;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -37,33 +38,48 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         recipe = new ArrayList<>();
+        Bundle b = getActivity().getIntent().getExtras();
+        int id = b.getInt("Id");
+        System.out.println("value in frgad id"+ id);
+        String ing = (String) b.getSerializable("Ingredients");
+        String recipe_ingredients[] = ing.split("\\},\\{");
 
-        if (savedInstanceState != null) {
+        for(int i=0;i<recipe_ingredients.length;i++){
+            recipe_ingredients[i]= recipe_ingredients[i].replaceAll("[\\[\\](){}]","");
+            System.out.println("Content" + recipe_ingredients[i]);
+ }
+
+       Log.i("values in detail frag",ing);
+       String step =(String)b.getSerializable("Steps");
+       Log.i("values of step de",step);
+
+     /*   if (savedInstanceState != null) {
             recipe = savedInstanceState.getStringArrayList(SELECTED_RECIPES);
             Log.i("Data values in fragment",savedInstanceState.getStringArrayList(SELECTED_RECIPES).toString());
         }// else {
            // recipe = getArguments().getStringArrayList(SELECTED_RECIPES);
-        //}
+        //}*/
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
 
-     //   List<Ingredients> ingredients = recipe.get(0).getIngredients();
 
         detailtext =(TextView) rootView.findViewById(R.id.recipe_detail_text);
 
         detailRecycler = (RecyclerView) rootView.findViewById(R.id.detail_recycler);
 
 
-        detailtext.setText("check if its coming");
+      detailtext.setText(recipe_ingredients[id - 1]);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
         detailRecycler.setLayoutManager(mLayoutManager);
         detailRecycler.setHasFixedSize(true);
 
         RecipeDetailAdapter mRecipeDetailAdapter = new RecipeDetailAdapter();
+
         detailRecycler.setAdapter(mRecipeDetailAdapter);
+        System.out.println("setting the adpater");
         mRecipeDetailAdapter.notifyDataSetChanged();
+        System.out.println("notify change");
         // Inflate the layout for this fragment
         return rootView;
     }
