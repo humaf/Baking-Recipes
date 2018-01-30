@@ -1,7 +1,5 @@
 package baking.strawbericreations.com.bakingrecipes.UserInterface;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,13 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import baking.strawbericreations.com.bakingrecipes.Adapters.RecipeDetailAdapter;
 import baking.strawbericreations.com.bakingrecipes.Model.Ingredients;
-import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
+
 import baking.strawbericreations.com.bakingrecipes.R;
 
 import static baking.strawbericreations.com.bakingrecipes.UserInterface.RecipeActivity.SELECTED_RECIPES;
@@ -34,7 +31,6 @@ public class DetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,37 +40,42 @@ public class DetailFragment extends Fragment {
         System.out.println("value in frgad id"+ id);
         String ing = (String) b.getSerializable("Ingredients");
         String recipe_ingredients[] = ing.split("\\},\\{");
-
         for(int i=0;i<recipe_ingredients.length;i++){
             recipe_ingredients[i]= recipe_ingredients[i].replaceAll("[\\[\\](){}]","");
+            recipe_ingredients[i] = recipe_ingredients[i].replaceAll("\"","");
             System.out.println("Content" + recipe_ingredients[i]);
- }
-
-       Log.i("values in detail frag",ing);
+        }
+        Log.i("values in detail frag",ing);
        String step =(String)b.getSerializable("Steps");
-       Log.i("values of step de",step);
+        String step_recipes[] = step.split("\\},\\{");
 
-     /*   if (savedInstanceState != null) {
-            recipe = savedInstanceState.getStringArrayList(SELECTED_RECIPES);
-            Log.i("Data values in fragment",savedInstanceState.getStringArrayList(SELECTED_RECIPES).toString());
-        }// else {
-           // recipe = getArguments().getStringArrayList(SELECTED_RECIPES);
-        //}*/
+        for(int j=0;j<step_recipes.length;j++){
+            step_recipes[j]= step_recipes[j].replaceAll("[\\[\\](){}]","");
+            step_recipes[j] = step_recipes[j].replaceAll("\"","");
+            System.out.println("Contents of steps" + step_recipes[j]);
+        }
+
+        ArrayList<String> list = new ArrayList<String>(step_recipes.length);
+       Log.i("values of step de",step_recipes.toString());
+
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-
 
         detailtext =(TextView) rootView.findViewById(R.id.recipe_detail_text);
 
         detailRecycler = (RecyclerView) rootView.findViewById(R.id.detail_recycler);
 
+        String output = "";
+        for(int i=0;i<recipe_ingredients.length;i++) {
+            output += recipe_ingredients[i] + "\n" + "\n";
+        }
 
-      detailtext.setText(recipe_ingredients[id - 1]);
+        detailtext.setText(output);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
         detailRecycler.setLayoutManager(mLayoutManager);
         detailRecycler.setHasFixedSize(true);
 
-        RecipeDetailAdapter mRecipeDetailAdapter = new RecipeDetailAdapter();
+        RecipeDetailAdapter mRecipeDetailAdapter = new RecipeDetailAdapter(getContext(),step_recipes);
 
         detailRecycler.setAdapter(mRecipeDetailAdapter);
         System.out.println("setting the adpater");
@@ -83,6 +84,4 @@ public class DetailFragment extends Fragment {
         // Inflate the layout for this fragment
         return rootView;
     }
-
-
 }

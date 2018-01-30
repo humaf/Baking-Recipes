@@ -1,6 +1,5 @@
 package baking.strawbericreations.com.bakingrecipes.UserInterface;
 
-import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             extras = getIntent().getExtras();
+
             int id = extras.getInt("id");
             recipe_name = extras.getString("Recipe name");
             Log.i("Recipe Name", recipe_name);
@@ -30,7 +30,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
             String Steps = (String) extras.getSerializable("Steps");
             Log.i("List of Steps", Steps);
 
-
             final DetailFragment fragment1 = new DetailFragment();
             fragment1.setArguments(extras);
             Log.i("Extras coming in frag",extras.toString());
@@ -38,7 +37,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container,fragment1).addToBackStack(STACK_RECIPE_DETAIL)
                     .commit();
-
         }
         else {
             recipe_name= savedInstanceState.getString("Title");

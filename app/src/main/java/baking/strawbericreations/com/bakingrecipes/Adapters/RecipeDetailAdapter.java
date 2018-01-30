@@ -21,16 +21,24 @@ import baking.strawbericreations.com.bakingrecipes.R;
 
 public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapter.DetailHolder>{
     String list_steps;
-    private ArrayList<Steps> StepsItemList = new ArrayList<Steps>();
+    private ArrayList<String> StepsItemList = new ArrayList<String>();
+    private String[] topp = new String[20];
+  //  private StepsItemList[] = new String[];
     private String recipeName;
+    private Context mContext;
 
-    public RecipeDetailAdapter() {
-
+ //   public RecipeDetailAdapter(Context context,ArrayList<String> StepsItemList) {
+         public RecipeDetailAdapter(Context context,String[] StepsItemList) {   
+        this.topp = StepsItemList;
+        this.mContext = context;
     }
-    public void setFullRecipeData(List<Recipe> recipesIn, Context context) {
-        list_steps = recipesIn.get(0).getSteps().toString();
+   // public void setFullRecipeData(List<String> recipesIn, Context context) {
+
+    public void setFullRecipeData(String[] recipesIn, Context context) {
+        list_steps = recipesIn.toString();
         Log.i("null or not",list_steps.toString());
-        recipeName = recipesIn.get(0).getName();
+     //   recipeName = recipesIn.get(0).getName();
+      //  Log.i("detail adap name",recipeName.toString());
         notifyDataSetChanged();
     }
 
@@ -45,14 +53,17 @@ public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapt
 
     @Override
     public void onBindViewHolder(DetailHolder holder, int position) {
-        final  Steps step = StepsItemList.get(position);
+        final  String step = topp[position];
         Log.i("steps in adapter",step.toString());
-        holder.textRecyclerView.setText(step.getId() + ". " + step.getShortDescription());
+    //    holder.textRecyclerView.setText(step.getId() + ". " + step.getShortDescription());
+          holder.textRecyclerView.setText(step);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        int count = topp.length;
+       Log.i("size in detail", String.valueOf(count));
+        return topp.length;
     }
 
     public static class DetailHolder extends RecyclerView.ViewHolder{
