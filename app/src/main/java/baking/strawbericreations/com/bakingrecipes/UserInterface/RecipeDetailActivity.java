@@ -25,6 +25,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
             int id = extras.getInt("id");
             recipe_name = extras.getString("Recipe name");
             Log.i("Recipe Name", recipe_name);
+            /*
+                ArrayList<Steps> =
+
+             */
+
+
             String Ingredients = (String) extras.getSerializable("Ingredients");
             Log.i("List Of Ingredients", Ingredients);
             String Steps = (String) extras.getSerializable("Steps");

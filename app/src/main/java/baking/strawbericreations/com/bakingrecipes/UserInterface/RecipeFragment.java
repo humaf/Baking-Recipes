@@ -31,8 +31,6 @@ import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
 
 public class RecipeFragment extends Fragment
-
-
 {
     static String ALL_RECIPES="All_Recipes";
     String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
