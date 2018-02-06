@@ -1,46 +1,41 @@
 package baking.strawbericreations.com.bakingrecipes.Adapters;
 
+/**
+ * Created by redrose on 1/30/18.
+ */
+
+
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import baking.strawbericreations.com.bakingrecipes.UserInterface.OnDetailItemListener;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.List;
-
-import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.Model.Steps;
 import baking.strawbericreations.com.bakingrecipes.R;
+import baking.strawbericreations.com.bakingrecipes.UserInterface.Steps_fragment;
 
 /**
  * Created by redrose on 1/24/18.
  */
 
-public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapter.DetailHolder>{
+public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapter.DetailHolder> {
 
     private ArrayList<Steps> StepsItemList = new ArrayList<Steps>();
 
+    private OnDetailItemListener onDetailItemListener;
+
     String list_steps;
-
-
     private String recipeName;
     private Context mContext;
 
-         public RecipeDetailAdapter(Context context,ArrayList<Steps>StepsItemList) {
+    public RecipeDetailAdapter(Context context, ArrayList<Steps> StepsItemList) {
         this.StepsItemList = StepsItemList;
         this.mContext = context;
-    }
-    public void setFullRecipeData(List<String> recipesIn, Context context) {
-
-
-        list_steps = recipesIn.toString();
-        Log.i("null or not",list_steps.toString());
-     //   recipeName = recipesIn.get(0).getName();
-      //  Log.i("detail adap name",recipeName.toString());
-        notifyDataSetChanged();
     }
 
     @Override
@@ -48,37 +43,66 @@ public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapt
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.detail_row, viewGroup, false);
-        DetailHolder viewHolder = new DetailHolder(view);
-        return viewHolder;
+        return new DetailHolder(view);
     }
+/*
+    public void setFullRecipeData(List<String> recipesIn, Context context) {
+        list_steps = recipesIn.toString();
+        Log.i("null or not",list_steps.toString());
+        notifyDataSetChanged();
+    }
+*/
 
-    @Override
     public void onBindViewHolder(DetailHolder holder, int position) {
-
-        final  Steps steppy = StepsItemList.get(position);
-       System.out.println("------------------------" + position);
-
+        final Steps steppy = StepsItemList.get(position);
+        System.out.println("------------------------" + position);
         holder.textRecyclerView.setText(steppy.getShortDescription());
-      Log.i("-----------",steppy.getShortDescription().toString());
-
+        Log.i("-----------", steppy.getShortDescription().toString());
+        holder.setOnDetailItemListener(new OnDetailItemListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                System.out.println("gottcha in adapter!!");
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                Steps_fragment myFragment = new Steps_fragment();
+                activity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, myFragment)
+                        .addToBackStack(null).commit();
+            }
+      });
     }
-
     @Override
     public int getItemCount() {
-        Log.i("size in detail",StepsItemList.toString() );
+        Log.i("size in detail", StepsItemList.toString());
         return StepsItemList.size();
     }
 
-    public static class DetailHolder extends RecyclerView.ViewHolder{
-        TextView textRecyclerView;
+    public OnDetailItemListener getOnDetailItemListener() {
+        return onDetailItemListener;
+    }
+
+    public void setOnDetailItemListener(OnDetailItemListener onDetailItemListener) {
+        this.onDetailItemListener = onDetailItemListener;
+    }
+
+
+    public static class DetailHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView textRecyclerView;
+        private OnDetailItemListener onDetailItemListener;
 
         public DetailHolder(View itemView) {
             super(itemView);
             textRecyclerView = (TextView) itemView.findViewById(R.id.detailtv);
-      
+            textRecyclerView.setOnClickListener(this);
         }
 
+        public void setOnDetailItemListener(OnDetailItemListener onDetailItemListener) {
+            this.onDetailItemListener = onDetailItemListener;
+        }
 
-
+        @Override
+        public void onClick(View view) {
+            onDetailItemListener.onItemClick(view, getAdapterPosition());
+        }
     }
+
 }

@@ -45,7 +45,6 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
 
         detailRecycler = (RecyclerView) rootView.findViewById(R.id.detail_recycler);
@@ -75,15 +74,12 @@ public class DetailFragment extends Fragment {
                 detailtext.append("\t\t\t Quantity: " + item.getQuantity().toString() + "\n");
                 detailtext.append("\t\t\t Measure: " +item.getMeasure() + "\n\n");
                 ingList.add(item);
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-
-       String step =(String)b.getSerializable("Steps");
+      String step =(String)b.getSerializable("Steps");
         try {
             JSONArray stepj = new JSONArray(step);
             stepList = new ArrayList<Steps>();
@@ -97,20 +93,17 @@ public class DetailFragment extends Fragment {
                 String videoURL = (res.optString("videoURL"));
                 item.getVideoURL();
                 stepList.add(item);
-
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
         detailRecycler.setLayoutManager(mLayoutManager);
         detailRecycler.setHasFixedSize(true);
+
+
 
         RecipeDetailAdapter mRecipeDetailAdapter = new RecipeDetailAdapter(getContext(),stepList);
 

@@ -65,7 +65,6 @@ public class RecipeFragment extends Fragment
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-
         RecipeDownload task = new RecipeDownload();
         task.execute(url);
 

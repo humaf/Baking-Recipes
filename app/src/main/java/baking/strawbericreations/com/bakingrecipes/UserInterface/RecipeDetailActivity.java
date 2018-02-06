@@ -4,8 +4,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import java.util.List;
 
-
+import baking.strawbericreations.com.bakingrecipes.Model.Steps;
 import baking.strawbericreations.com.bakingrecipes.R;
 
 public class RecipeDetailActivity extends AppCompatActivity {
@@ -25,11 +26,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
             int id = extras.getInt("id");
             recipe_name = extras.getString("Recipe name");
             Log.i("Recipe Name", recipe_name);
-            /*
-                ArrayList<Steps> =
-
-             */
-
 
             String Ingredients = (String) extras.getSerializable("Ingredients");
             Log.i("List Of Ingredients", Ingredients);
@@ -52,7 +48,25 @@ public class RecipeDetailActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(recipe_name);
    }
 
-    @Override
+
+    public void onListItemClick(List<Steps> stepsOut, int clickedItemIndex, String recipeName,String Steps) {
+
+        final Steps_fragment fragment = new Steps_fragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        getSupportActionBar().setTitle(recipeName);
+        Bundle stepBundle = new Bundle();
+        stepBundle.putString("Title",recipeName);
+        stepBundle.putString("Steps",Steps);
+        Log.i("cccccccccccccc",stepBundle.toString());
+        fragment.setArguments(stepBundle);
+
+        fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment).addToBackStack(STACK_RECIPE_STEP_DETAIL)
+                    .commit();
+
+    }
+
+   @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("Recipe name",recipe_name);
