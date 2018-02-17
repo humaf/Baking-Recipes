@@ -3,8 +3,8 @@ package baking.strawbericreations.com.bakingrecipes.Adapters;
 /**
  * Created by redrose on 1/30/18.
  */
-
-
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.OnDetailItemListener;
@@ -62,8 +62,15 @@ public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapt
             @Override
             public void onItemClick(View view, int position) {
                 System.out.println("gottcha in adapter!!");
+                String des = steppy.getDescription();
+                String vurl = steppy.getVideoURL();
+                Bundle bundle = new Bundle();
+                bundle.putString("description", des);
+                bundle.putString("video",vurl);
+                System.out.println("description to put bundle" + des);
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                Steps_fragment myFragment = new Steps_fragment();
+                Fragment myFragment = new Steps_fragment();
+                myFragment.setArguments(bundle);
                 activity.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, myFragment)
                         .addToBackStack(null).commit();
@@ -98,11 +105,9 @@ public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapt
         public void setOnDetailItemListener(OnDetailItemListener onDetailItemListener) {
             this.onDetailItemListener = onDetailItemListener;
         }
-
         @Override
         public void onClick(View view) {
             onDetailItemListener.onItemClick(view, getAdapterPosition());
         }
     }
-
 }

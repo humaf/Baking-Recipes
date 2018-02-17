@@ -97,15 +97,13 @@ public class DetailFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+            System.gc();
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
         detailRecycler.setLayoutManager(mLayoutManager);
         detailRecycler.setHasFixedSize(true);
 
-
-
-        RecipeDetailAdapter mRecipeDetailAdapter = new RecipeDetailAdapter(getContext(),stepList);
+    RecipeDetailAdapter mRecipeDetailAdapter = new RecipeDetailAdapter(getContext(),stepList);
 
         detailRecycler.setAdapter(mRecipeDetailAdapter);
         System.out.println("setting the adpater");
