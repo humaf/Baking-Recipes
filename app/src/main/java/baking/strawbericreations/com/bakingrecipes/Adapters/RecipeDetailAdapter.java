@@ -55,6 +55,7 @@ public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapt
 
     public void onBindViewHolder(DetailHolder holder, int position) {
         final Steps steppy = StepsItemList.get(position);
+
         System.out.println("------------------------" + position);
         holder.textRecyclerView.setText(steppy.getShortDescription());
         Log.i("-----------", steppy.getShortDescription().toString());
@@ -64,10 +65,14 @@ public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapt
                 System.out.println("gottcha in adapter!!");
                 String des = steppy.getDescription();
                 String vurl = steppy.getVideoURL();
+                Integer id = steppy.getId();
                 Bundle bundle = new Bundle();
                 bundle.putString("description", des);
                 bundle.putString("video",vurl);
+                bundle.putInt("poos",position);
+                System.out.println("positionnnn" + position);
                 System.out.println("description to put bundle" + des);
+                System.out.println("video to put bundle" + vurl);
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Fragment myFragment = new Steps_fragment();
                 myFragment.setArguments(bundle);

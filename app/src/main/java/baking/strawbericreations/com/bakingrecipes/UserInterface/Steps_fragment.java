@@ -4,11 +4,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -45,6 +48,8 @@ public class Steps_fragment extends Fragment {
     private Handler mainHandler;
     private OnDetailItemListener detailItemListener;
     Steps item;
+    String v="";
+    int pos;
     public Steps_fragment() {
         // Required empty public constructor
     }
@@ -87,7 +92,7 @@ public class Steps_fragment extends Fragment {
                 String videoURL = (res.optString("videoURL"));
                 item.setVideoURL(videoURL);
                 stepList.add(item);
-            //   steps_details.setText(description);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -96,21 +101,41 @@ public class Steps_fragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             String i = bundle.getString("description");
-            String v = bundle.getString("video");
-          setStepsData(i);
-        }
+            steps_details.setText(i);
+           System.out.println("Let's see if it comes here");
+             v = bundle.getString("video");
+            pos = bundle.getInt("poos");
+            System.out.println("if it is same or not " + pos);
+            String vii = stepList.get(pos).getVideoURL();
+
+          //  System.out.println("Emptyyyy" + v);
+//            Log.i("video is empty",v);
+        if(!vii.isEmpty()){
+                Log.i("coming till this point",vii);
+                initializePlayer(Uri.parse(vii));
+            }
+                else
+            {
+                player=null;
+                simpleExoPlayerView.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.ic_visibility_off_white_36dp));
+                simpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
+            }
+            }
+          //  Uri vi = Uri.parse(v);
+        //  setStepsData(i,vi);
 
      return rootView;
     }
 
- private void setStepsData(String desc){
+ //private void setStepsData(String desc,Uri vid){
+/*
+     private void setStepsData(String desc){
     // String s = stepList.get(position).getDescription();
      steps_details.setText(desc);
-
-
+         initializePlayer(Uri.parse(v));
 
  }
-
+*/
     private void initializePlayer(Uri mediaUri) {
         if (player == null) {
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);

@@ -28,6 +28,8 @@ public class Steps implements Serializable {
 
     private String shortDescription;
 
+    private String videoURL;
+
     public String getDescription() {
         return description;
     }
@@ -46,7 +48,7 @@ public class Steps implements Serializable {
         this.videoURL = videoURL;
     }
 
-    private String videoURL;
+
 
     public String getThumbnailURL() {
         return thumbnailURL;

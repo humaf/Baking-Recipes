@@ -24,7 +24,6 @@
 
         <uses-permission android:name="android.permission.INTERNET" />
 
-        <activity android:name=".UserInterface.RecipeDetailActivity"></activity>
-    </application>
+          </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -90,6 +91,7 @@ public class RecipeFragment extends Fragment
 
         @Override
         protected ArrayList<Recipe> doInBackground(String... urls) {
+            long st = System.currentTimeMillis();
             String result = "";
             URL url;
             HttpURLConnection urlConnection = null;
@@ -119,7 +121,7 @@ public class RecipeFragment extends Fragment
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            long requestEndTime = System.currentTimeMillis();
             try {
                  JSONArray results = new JSONArray(result);
             recipeList = new ArrayList<Recipe>();
@@ -146,6 +148,14 @@ public class RecipeFragment extends Fragment
         }catch (JSONException e) {
          e.printStackTrace();
       }
+      long end = System.currentTimeMillis();
+            long totaltime  = requestEndTime -st;
+            System.out.println("++++++++++++++++++++++++time" + totaltime);
+            long Parsetime = end - requestEndTime;
+            System.out.println("--------------------------time" + Parsetime);
+
+            Log.i( "","request end " + totaltime );
+            Log.i("", "parse time "  +Parsetime);
         return recipeList;
 }
       protected void onPostExecute(ArrayList<Recipe> result) {
