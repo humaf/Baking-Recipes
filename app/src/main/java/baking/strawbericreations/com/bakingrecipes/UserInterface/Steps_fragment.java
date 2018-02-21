@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -48,8 +50,9 @@ public class Steps_fragment extends Fragment {
     private Handler mainHandler;
     private OnDetailItemListener detailItemListener;
     Steps item;
-    String v="";
+
     int pos;
+
     public Steps_fragment() {
         // Required empty public constructor
     }
@@ -74,6 +77,8 @@ public class Steps_fragment extends Fragment {
 
         Button next = (Button)rootView.findViewById(R.id.nextStep);
 
+//        detailItemListener = (OnDetailItemListener) getActivity();
+
         recipe = new ArrayList<>();
         Bundle b = getActivity().getIntent().getExtras();
         String steps = b.getString("Steps");
@@ -85,6 +90,8 @@ public class Steps_fragment extends Fragment {
                 for(int i=0;i<stepj.length();i++) {
                 JSONObject res = stepj.optJSONObject(i);
                  item = new Steps();
+                    int id = (res.optInt("id"));
+                    item.setId(id);
                 String shortDescription = (res.optString("shortDescription"));
                 item.setShortDescription(shortDescription);
                 String description = (res.optString("description"));
@@ -100,16 +107,19 @@ public class Steps_fragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            String i = bundle.getString("description");
-            steps_details.setText(i);
-           System.out.println("Let's see if it comes here");
-             v = bundle.getString("video");
+
             pos = bundle.getInt("poos");
             System.out.println("if it is same or not " + pos);
-            String vii = stepList.get(pos).getVideoURL();
 
-          //  System.out.println("Emptyyyy" + v);
-//            Log.i("video is empty",v);
+            String vii = stepList.get(pos).getVideoURL();
+            String des = stepList.get(pos).getDescription();
+            int id = stepList.get(pos).getId();
+            System.out.println("iiiiiiiiiiiiiiiii" + id);
+            System.out.println("description coming " + des);
+            steps_details.setText(des);
+            setVideo(vii);
+
+/*
         if(!vii.isEmpty()){
                 Log.i("coming till this point",vii);
                 initializePlayer(Uri.parse(vii));
@@ -120,22 +130,65 @@ public class Steps_fragment extends Fragment {
                 simpleExoPlayerView.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.ic_visibility_off_white_36dp));
                 simpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
             }
+            */
             }
-          //  Uri vi = Uri.parse(v);
-        //  setStepsData(i,vi);
+            System.out.println("check null or not" + stepList.get(pos).getId());
+
+        previous.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                if (stepList.get(pos).getId() > 0) {
+                  //  setVideo(stepList.get(pos-1).getVideoURL());
+                    if (player!=null){
+                        player.stop();
+                    }
+                    steps_details.setText(stepList.get(pos-1).getDescription());
+               //    detailItemListener.onItemClick(view,stepList.get(pos).getId() - 1);
+                    pos = pos - 1;
+                }
+                else {
+                    Toast.makeText(getActivity(),"You already are in the First step of the recipe", Toast.LENGTH_SHORT).show();
+
+                }
+            }});
+
+       next.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                int lastIndex = stepList.size()-1;
+                if (stepList.get(pos).getId() < stepList.get(lastIndex).getId()) {
+                //   setVideo(stepList.get(pos+1).getVideoURL());
+                    if (player!=null){
+                        player.stop();
+                    }
+              //   detailItemListener.onItemClick(view,stepList.get(pos).getId() + 1);
+                    steps_details.setText(stepList.get(pos+1).getDescription());
+                    pos = pos + 1;
+                }
+                else {
+                    Toast.makeText(getContext(),"You already are in the Last step of the recipe", Toast.LENGTH_SHORT).show();
+                }
+            }});
 
      return rootView;
     }
 
- //private void setStepsData(String desc,Uri vid){
-/*
-     private void setStepsData(String desc){
-    // String s = stepList.get(position).getDescription();
-     steps_details.setText(desc);
-         initializePlayer(Uri.parse(v));
 
- }
-*/
+    private void setVideo(String vstring){
+
+        if(!vstring.isEmpty()){
+                Log.i("coming till this point",vstring);
+                initializePlayer(Uri.parse(vstring));
+            }
+                else
+            {
+                player=null;
+                 simpleExoPlayerView.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.ic_visibility_off_white_36dp));
+                simpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
+            }
+
+    }
+
     private void initializePlayer(Uri mediaUri) {
         if (player == null) {
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);

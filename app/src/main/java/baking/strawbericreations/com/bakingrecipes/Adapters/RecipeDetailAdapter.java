@@ -45,13 +45,6 @@ public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapt
         View view = inflater.inflate(R.layout.detail_row, viewGroup, false);
         return new DetailHolder(view);
     }
-/*
-    public void setFullRecipeData(List<String> recipesIn, Context context) {
-        list_steps = recipesIn.toString();
-        Log.i("null or not",list_steps.toString());
-        notifyDataSetChanged();
-    }
-*/
 
     public void onBindViewHolder(DetailHolder holder, int position) {
         final Steps steppy = StepsItemList.get(position);
@@ -63,18 +56,16 @@ public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapt
             @Override
             public void onItemClick(View view, int position) {
                 System.out.println("gottcha in adapter!!");
-                String des = steppy.getDescription();
-                String vurl = steppy.getVideoURL();
-                Integer id = steppy.getId();
+
                 Bundle bundle = new Bundle();
-                bundle.putString("description", des);
-                bundle.putString("video",vurl);
+
                 bundle.putInt("poos",position);
+
                 System.out.println("positionnnn" + position);
-                System.out.println("description to put bundle" + des);
-                System.out.println("video to put bundle" + vurl);
+
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Fragment myFragment = new Steps_fragment();
+
                 myFragment.setArguments(bundle);
                 activity.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, myFragment)
