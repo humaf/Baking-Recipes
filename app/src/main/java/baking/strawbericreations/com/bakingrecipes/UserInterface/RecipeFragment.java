@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +59,8 @@ public class RecipeFragment extends Fragment
 
       //  toolbar =(Toolbar) rootView.findViewById(R.id.toolbar);
 
+        Toast nonetwork = Toast.makeText(getContext(),"Please Connect to the Intenet",Toast.LENGTH_LONG);
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_recipe);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -64,8 +68,13 @@ public class RecipeFragment extends Fragment
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        RecipeDownload task = new RecipeDownload();
-        task.execute(url);
+        if(!isNetworkAvailable(getContext())== false) {
+
+            RecipeDownload task = new RecipeDownload();
+            task.execute(url);
+        }
+        else
+                nonetwork.show();
 
         return rootView;
     }
