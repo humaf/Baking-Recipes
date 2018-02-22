@@ -99,18 +99,15 @@ public class Steps_fragment extends Fragment {
                 String videoURL = (res.optString("videoURL"));
                 item.setVideoURL(videoURL);
                 stepList.add(item);
-
-            }
+                }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-
             pos = bundle.getInt("poos");
             System.out.println("if it is same or not " + pos);
-
             String vii = stepList.get(pos).getVideoURL();
             String des = stepList.get(pos).getDescription();
             int id = stepList.get(pos).getId();
@@ -118,49 +115,35 @@ public class Steps_fragment extends Fragment {
             System.out.println("description coming " + des);
             steps_details.setText(des);
             setVideo(vii);
-
-/*
-        if(!vii.isEmpty()){
-                Log.i("coming till this point",vii);
-                initializePlayer(Uri.parse(vii));
-            }
-                else
-            {
-                player=null;
-                simpleExoPlayerView.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.ic_visibility_off_white_36dp));
-                simpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
-            }
-            */
-            }
+        }
             System.out.println("check null or not" + stepList.get(pos).getId());
 
         previous.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
                 if (stepList.get(pos).getId() > 0) {
-                  //  setVideo(stepList.get(pos-1).getVideoURL());
+
                     if (player!=null){
                         player.stop();
                     }
+                    setVideo(stepList.get(pos-1).getVideoURL());
                     steps_details.setText(stepList.get(pos-1).getDescription());
                //    detailItemListener.onItemClick(view,stepList.get(pos).getId() - 1);
                     pos = pos - 1;
                 }
                 else {
                     Toast.makeText(getActivity(),"You already are in the First step of the recipe", Toast.LENGTH_SHORT).show();
-
                 }
             }});
 
        next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
                 int lastIndex = stepList.size()-1;
                 if (stepList.get(pos).getId() < stepList.get(lastIndex).getId()) {
-                //   setVideo(stepList.get(pos+1).getVideoURL());
                     if (player!=null){
                         player.stop();
                     }
+                    setVideo(stepList.get(pos+1).getVideoURL());
               //   detailItemListener.onItemClick(view,stepList.get(pos).getId() + 1);
                     steps_details.setText(stepList.get(pos+1).getDescription());
                     pos = pos + 1;
@@ -183,13 +166,17 @@ public class Steps_fragment extends Fragment {
                 else
             {
                 player=null;
-                 simpleExoPlayerView.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.ic_visibility_off_white_36dp));
-                simpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
-            }
+               Toast novideo = Toast.makeText(getContext(),"No video available for this step",Toast.LENGTH_LONG);
+                novideo.show();
+               // simpleExoPlayerView.removeAllViews();
+              //  simpleExoPlayerView.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.ic_visibility_off_white_36dp));
+                //  simpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
 
+            }
     }
 
     private void initializePlayer(Uri mediaUri) {
+
         if (player == null) {
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
             DefaultTrackSelector trackSelector = new DefaultTrackSelector(mainHandler, videoTrackSelectionFactory);
