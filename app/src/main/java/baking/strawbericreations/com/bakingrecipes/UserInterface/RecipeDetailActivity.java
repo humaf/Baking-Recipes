@@ -35,10 +35,25 @@ public class RecipeDetailActivity extends AppCompatActivity {
             final DetailFragment fragment1 = new DetailFragment();
             fragment1.setArguments(extras);
             Log.i("Extras coming in frag",extras.toString());
-            FragmentManager fragmentManager = getSupportFragmentManager();
+
+
+   FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container,fragment1).addToBackStack(STACK_RECIPE_DETAIL)
                     .commit();
+
+            if (findViewById(R.id.recipe_linear_layout).getTag()!=null && findViewById(R.id.recipe_linear_layout).getTag().equals("tablet-land")) {
+                final Steps_fragment fragment2 = new Steps_fragment();
+                fragment2.setArguments(extras);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container2, fragment2).addToBackStack(STACK_RECIPE_STEP_DETAIL)
+                        .commit();
+            }
+            else
+            {
+
+            }
+
         }
         else {
             recipe_name= savedInstanceState.getString("Title");

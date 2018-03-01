@@ -1,5 +1,7 @@
 package baking.strawbericreations.com.bakingrecipes.UserInterface;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +52,7 @@ public class Steps_fragment extends Fragment {
     private Handler mainHandler;
     private OnDetailItemListener detailItemListener;
     Steps item;
+    View rootView;
 
     int pos;
 
@@ -62,7 +65,7 @@ public class Steps_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
+       rootView = inflater.inflate(R.layout.fragment_steps, container, false);
 
         mainHandler = new Handler();
         bandwidthMeter = new DefaultBandwidthMeter();
@@ -162,15 +165,20 @@ public class Steps_fragment extends Fragment {
         if(!vstring.isEmpty()){
                 Log.i("coming till this point",vstring);
                 initializePlayer(Uri.parse(vstring));
+                player = null;
+            if (rootView.findViewWithTag("sw600dp-land-recipe_step_detail")!=null) {
+                getActivity().findViewById(R.id.fragment_container2).setLayoutParams(new LinearLayout.LayoutParams(-1,-2));
+                simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+            }
+            else if (isInLandscapeMode(getContext())){
+                steps_details.setVisibility(View.GONE);
+            }
             }
                 else
             {
                 player=null;
                Toast novideo = Toast.makeText(getContext(),"No video available for this step",Toast.LENGTH_LONG);
                 novideo.show();
-               // simpleExoPlayerView.removeAllViews();
-              //  simpleExoPlayerView.setForeground(ContextCompat.getDrawable(getContext(), R.drawable.ic_visibility_off_white_36dp));
-                //  simpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
 
             }
     }
@@ -190,6 +198,10 @@ public class Steps_fragment extends Fragment {
         }
     }
 
+
+    public boolean isInLandscapeMode( Context context ) {
+        return (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
+    }
     @Override
     public void onDetach() {
         super.onDetach();

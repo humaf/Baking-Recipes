@@ -9,13 +9,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,27 +24,26 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import baking.strawbericreations.com.bakingrecipes.Adapters.*;
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
 
 public class RecipeFragment extends Fragment
 {
-    static String ALL_RECIPES="All_Recipes";
+  //  static String ALL_RECIPES="All_Recipes";
     String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
-    private RecipeAdapter adapter;
+    private RecipeAdapter adapter ;
 
-    private Context mContext;
+  //  private Context mContext;
 
     RecyclerView recyclerView;
 
-    Toolbar toolbar;
+ //   Toolbar toolbar;
 
-    Bundle bundle;
+   // Bundle bundle;
 
-    private List<Recipe> recipeList = new ArrayList<>();
+  //  private List<Recipe> recipeList = new ArrayList<>();
 
     public RecipeFragment(){
 
@@ -99,6 +96,7 @@ public class RecipeFragment extends Fragment
         @Override
         protected ArrayList<Recipe> doInBackground(String... urls) {
             long st = System.currentTimeMillis();
+            Log.i("TAG", "starting");
             String result = "";
             URL url;
             HttpURLConnection urlConnection = null;
@@ -120,6 +118,8 @@ public class RecipeFragment extends Fragment
                     result += current;
 
                     data = reader.read();
+                    //Log.i("TAG", "here");
+                    //Log.i("TAG", "here");
 
                 }
 
@@ -129,14 +129,16 @@ public class RecipeFragment extends Fragment
                 e.printStackTrace();
             }
             long requestEndTime = System.currentTimeMillis();
+            Log.i("TAG", "ending");
+
             try {
                  JSONArray results = new JSONArray(result);
             recipeList = new ArrayList<Recipe>();
             for (int i = 0; i < results.length(); i++) {
                 JSONObject res = results.optJSONObject(i);
                 Recipe item = new Recipe();
-                JSONArray ing = new JSONArray();
-                JSONArray steps = new JSONArray();
+                JSONArray ing; //= new JSONArray();
+                JSONArray steps; //= new JSONArray();
                 int id =(res.optInt("id"));
                 item.setId(id);
                 String recipeName = (res.optString("name"));
@@ -150,12 +152,12 @@ public class RecipeFragment extends Fragment
                 Log.i("stepps",steps.toString());
                 recipeList.add(item);
                 Log.i("recipeList",recipeList.toString());
-        }
+            }
 
         }catch (JSONException e) {
          e.printStackTrace();
       }
-      long end = System.currentTimeMillis();
+            long end = System.currentTimeMillis();
             long totaltime  = requestEndTime -st;
             System.out.println("++++++++++++++++++++++++time" + totaltime);
             long Parsetime = end - requestEndTime;
@@ -166,7 +168,16 @@ public class RecipeFragment extends Fragment
         return recipeList;
 }
       protected void onPostExecute(ArrayList<Recipe> result) {
-          adapter = new RecipeAdapter(getContext(),(ArrayList<Recipe>) result);
+          long st1 = System.currentTimeMillis();
+          adapter = new RecipeAdapter(getContext(),result);
+          long st2 = System.currentTimeMillis();
+          Log.i("", "st2 - st1 "+(st2-st1));
+          recyclerView.setAdapter(adapter);
+          long st3 = System.currentTimeMillis();
+          Log.i("", "st3 - st2 "+(st3-st2));
+          adapter.notifyDataSetChanged();
+          long st4 = System.currentTimeMillis();
+          Log.i("", "st4 - st3 "+(st4-st3));
           adapter.setOnItemClickListener(new OnItemClickListener() {
                @Override
                public void onItemClick(View view, int position) {
@@ -175,8 +186,8 @@ public class RecipeFragment extends Fragment
                }
 
         });
-          recyclerView.setAdapter(adapter);
-          adapter.notifyDataSetChanged();
+          long st5 = System.currentTimeMillis();
+          Log.i("", "st5 - st4 "+(st5-st4));
       }
     }
 
