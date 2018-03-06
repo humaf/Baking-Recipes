@@ -1,19 +1,37 @@
 package baking.strawbericreations.com.bakingrecipes.UserInterface;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
+
+import baking.strawbericreations.com.bakingrecipes.Model.Ingredients;
 import baking.strawbericreations.com.bakingrecipes.Model.Steps;
 import baking.strawbericreations.com.bakingrecipes.R;
+import baking.strawbericreations.com.bakingrecipes.widget.BakingWidget;
 
 public class RecipeDetailActivity extends AppCompatActivity {
-    String recipe_name="";
-    static String STACK_RECIPE_DETAIL="STACK_RECIPE_DETAIL";
-    static String STACK_RECIPE_STEP_DETAIL="STACK_RECIPE_STEP_DETAIL";
+    String toPrint = "";
+    String recipe_name = "";
+    static String STACK_RECIPE_DETAIL = "STACK_RECIPE_DETAIL";
+    static String STACK_RECIPE_STEP_DETAIL = "STACK_RECIPE_STEP_DETAIL";
+    static String UPDATE_ACTION = "UPDATE_ACTION";
     Bundle extras;
+    String Ingredients;
+    String str;
+    private ArrayList<Ingredients> ingList = new ArrayList<>();
+    private ArrayList<String> widitem = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,66 +45,80 @@ public class RecipeDetailActivity extends AppCompatActivity {
             recipe_name = extras.getString("Recipe name");
             Log.i("Recipe Name", recipe_name);
 
-            String Ingredients = (String) extras.getSerializable("Ingredients");
+            Ingredients = (String) extras.getSerializable("Ingredients");
             Log.i("List Of Ingredients", Ingredients);
+
+
+            try {
+                JSONArray widgets_res = new JSONArray(Ingredients);
+
+                for(int i=0;i<widgets_res.length();i++){
+                    JSONObject jobj = widgets_res.getJSONObject(i);
+                    Ingredients item = new Ingredients();
+                    String ingredient = (jobj.optString("ingredient"));
+                    item.setIngredient(ingredient);
+                    Log.i("chhhhhhhhhhhhhyiu",ingredient);
+                    ingList.add(item);
+                    widitem.add(ingredient);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            for(int i=0; i<widitem.size(); i++){
+                toPrint +=  widitem.get(i) + "\n";
+            }
+
             String Steps = (String) extras.getSerializable("Steps");
             Log.i("List of Steps", Steps);
 
             final DetailFragment fragment1 = new DetailFragment();
             fragment1.setArguments(extras);
-            Log.i("Extras coming in frag",extras.toString());
+            Log.i("Extras coming in frag", extras.toString());
 
 
-   FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container,fragment1).addToBackStack(STACK_RECIPE_DETAIL)
+                    .replace(R.id.fragment_container, fragment1).addToBackStack(STACK_RECIPE_DETAIL)
                     .commit();
 
-            if (findViewById(R.id.recipe_linear_layout).getTag()!=null && findViewById(R.id.recipe_linear_layout).getTag().equals("tablet-land")) {
+            if (findViewById(R.id.recipe_linear_layout).getTag() != null && findViewById(R.id.recipe_linear_layout).getTag().equals("tablet-land")) {
                 final Steps_fragment fragment2 = new Steps_fragment();
                 fragment2.setArguments(extras);
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container2, fragment2).addToBackStack(STACK_RECIPE_STEP_DETAIL)
                         .commit();
-            }
-            else
-            {
+            } else {
 
             }
 
-        }
-        else {
-            recipe_name= savedInstanceState.getString("Title");
+        } else {
+            recipe_name = savedInstanceState.getString("Title");
         }
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(recipe_name);
-   }
 
-
-    public void onListItemClick(List<Steps> stepsOut, int clickedItemIndex, String recipeName,String Steps) {
-
-        final Steps_fragment fragment = new Steps_fragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        getSupportActionBar().setTitle(recipeName);
-        Bundle stepBundle = new Bundle();
-        stepBundle.putString("Title",recipeName);
-        stepBundle.putString("Steps",Steps);
-        Log.i("cccccccccccccc",stepBundle.toString());
-        fragment.setArguments(stepBundle);
-
-        fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragment).addToBackStack(STACK_RECIPE_STEP_DETAIL)
-                    .commit();
-
+        updateWidget();
     }
 
-   @Override
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("Recipe name",recipe_name);
-        Log.i("title",recipe_name);
+        outState.putString("Recipe name", recipe_name);
+        Log.i("title", recipe_name);
     }
 
-
+    private void updateWidget() {
+        Intent i = new Intent(this, BakingWidget.class);
+        //  i.setAction(BakingWidget.UPDATE_ACTION);
+        Toast.makeText(getApplicationContext(), "from the activity",
+                Toast.LENGTH_SHORT).show();
+        i.putExtra("INGREDIENTS", toPrint);
+        sendBroadcast(i);
     }
+}

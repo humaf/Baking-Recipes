@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import baking.strawbericreations.com.bakingrecipes.Adapters.*;
+import baking.strawbericreations.com.bakingrecipes.IdlingResources.MyIdlingResources;
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
 
@@ -35,15 +36,7 @@ public class RecipeFragment extends Fragment
 
     private RecipeAdapter adapter ;
 
-  //  private Context mContext;
-
     RecyclerView recyclerView;
-
- //   Toolbar toolbar;
-
-   // Bundle bundle;
-
-  //  private List<Recipe> recipeList = new ArrayList<>();
 
     public RecipeFragment(){
 
@@ -54,9 +47,7 @@ public class RecipeFragment extends Fragment
 
         View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-      //  toolbar =(Toolbar) rootView.findViewById(R.id.toolbar);
-
-        Toast nonetwork = Toast.makeText(getContext(),"Please Connect to the Intenet",Toast.LENGTH_LONG);
+        Toast nonetwork = Toast.makeText(getContext(),"Please Connect to the Internet",Toast.LENGTH_LONG);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_recipe);
 
@@ -65,8 +56,13 @@ public class RecipeFragment extends Fragment
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        if(!isNetworkAvailable(getContext())== false) {
+        MyIdlingResources idlingResource = (MyIdlingResources)((RecipeActivity)getActivity()).getIdlingResource();
 
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
+
+        if(!isNetworkAvailable(getContext())== false) {
             RecipeDownload task = new RecipeDownload();
             task.execute(url);
         }
@@ -118,9 +114,6 @@ public class RecipeFragment extends Fragment
                     result += current;
 
                     data = reader.read();
-                    //Log.i("TAG", "here");
-                    //Log.i("TAG", "here");
-
                 }
 
             } catch (MalformedURLException e) {
@@ -133,12 +126,13 @@ public class RecipeFragment extends Fragment
 
             try {
                  JSONArray results = new JSONArray(result);
-            recipeList = new ArrayList<Recipe>();
-            for (int i = 0; i < results.length(); i++) {
+                recipeList = new ArrayList<Recipe>();
+                for (int i = 0; i < results.length(); i++) {
                 JSONObject res = results.optJSONObject(i);
                 Recipe item = new Recipe();
                 JSONArray ing; //= new JSONArray();
                 JSONArray steps; //= new JSONArray();
+                    JSONArray ing_widget;
                 int id =(res.optInt("id"));
                 item.setId(id);
                 String recipeName = (res.optString("name"));

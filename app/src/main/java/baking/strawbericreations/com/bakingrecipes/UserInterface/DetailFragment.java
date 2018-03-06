@@ -110,6 +110,10 @@ public class DetailFragment extends Fragment {
         mRecipeDetailAdapter.notifyDataSetChanged();
         System.out.println("notify change");
         // Inflate the layout for this fragment
+
+
         return rootView;
     }
+
+
 }
