@@ -28,14 +28,17 @@ import baking.strawbericreations.com.bakingrecipes.Adapters.*;
 import baking.strawbericreations.com.bakingrecipes.IdlingResources.MyIdlingResources;
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RecipeFragment extends Fragment
 {
-  //  static String ALL_RECIPES="All_Recipes";
+
     String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     private RecipeAdapter adapter ;
 
+    @BindView(R.id.recycler_recipe)
     RecyclerView recyclerView;
 
     public RecipeFragment(){
@@ -46,10 +49,10 @@ public class RecipeFragment extends Fragment
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
+        ButterKnife.bind(this,rootView);
 
         Toast nonetwork = Toast.makeText(getContext(),"Please Connect to the Internet",Toast.LENGTH_LONG);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_recipe);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 

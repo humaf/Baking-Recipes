@@ -13,6 +13,8 @@ import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
 import baking.strawbericreations.com.bakingrecipes.R;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.OnItemClickListener;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.RecipeDetailActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by redrose on 1/17/18.
@@ -73,13 +75,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     }
 
     public  static  class RecipeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @BindView(R.id.recipeText)
         public TextView title;
         public int position;
         private OnItemClickListener onItemClickListener;
 
         public RecipeHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.recipeText);
+         //   title = (TextView) view.findViewById(R.id.recipeText);
+            ButterKnife.bind(this,view);
             title.setOnClickListener(this);
         }
 

@@ -39,15 +39,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import baking.strawbericreations.com.bakingrecipes.Model.Steps;
 import baking.strawbericreations.com.bakingrecipes.R;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class Steps_fragment extends Fragment {
 
     ArrayList<String> recipe;
     private ArrayList<Steps> stepList = new ArrayList<>();
-    private SimpleExoPlayerView simpleExoPlayerView;
+    @BindView(R.id.player_View)
+    SimpleExoPlayerView simpleExoPlayerView;
     private BandwidthMeter bandwidthMeter;
-    private TextView  steps_details;
+    @BindView(R.id.recipe_step_detail_text)
+     TextView  steps_details;
+    @BindView(R.id.previousStep)
+    Button previous;
+    @BindView(R.id.nextStep)
+    Button next;
+
     private SimpleExoPlayer player;
     private Handler mainHandler;
     private OnDetailItemListener detailItemListener;
@@ -67,24 +76,18 @@ public class Steps_fragment extends Fragment {
 
        rootView = inflater.inflate(R.layout.fragment_steps, container, false);
 
+        ButterKnife.bind(this,rootView);
         mainHandler = new Handler();
         bandwidthMeter = new DefaultBandwidthMeter();
         simpleExoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_View);
         simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
-        ImageView thumbnail = (ImageView)rootView.findViewById(R.id.thumb_Image);
-
-        steps_details =(TextView)rootView.findViewById(R.id.recipe_step_detail_text);
-
-        Button previous =(Button)rootView.findViewById(R.id.previousStep);
-
-        Button next = (Button)rootView.findViewById(R.id.nextStep);
 
 //        detailItemListener = (OnDetailItemListener) getActivity();
 
         recipe = new ArrayList<>();
         Bundle b = getActivity().getIntent().getExtras();
-        String steps = b.getString("Steps");
+
         String step = (String) b.getSerializable("Steps");
 
         try {
@@ -147,7 +150,6 @@ public class Steps_fragment extends Fragment {
                         player.stop();
                     }
                     setVideo(stepList.get(pos+1).getVideoURL());
-              //   detailItemListener.onItemClick(view,stepList.get(pos).getId() + 1);
                     steps_details.setText(stepList.get(pos+1).getDescription());
                     pos = pos + 1;
                 }

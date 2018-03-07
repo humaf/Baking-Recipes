@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import baking.strawbericreations.com.bakingrecipes.Model.Steps;
 import baking.strawbericreations.com.bakingrecipes.R;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.Steps_fragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by redrose on 1/24/18.
@@ -89,12 +91,14 @@ public class RecipeDetailAdapter extends  RecyclerView.Adapter<RecipeDetailAdapt
 
 
     public static class DetailHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.detailtv)
         public TextView textRecyclerView;
         private OnDetailItemListener onDetailItemListener;
 
         public DetailHolder(View itemView) {
             super(itemView);
-            textRecyclerView = (TextView) itemView.findViewById(R.id.detailtv);
+           // textRecyclerView = (TextView) itemView.findViewById(R.id.detailtv);
+            ButterKnife.bind(this,itemView);
             textRecyclerView.setOnClickListener(this);
         }
 

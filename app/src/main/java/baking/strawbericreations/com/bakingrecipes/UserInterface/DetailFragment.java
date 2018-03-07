@@ -23,6 +23,8 @@ import baking.strawbericreations.com.bakingrecipes.Model.Ingredients;
 
 import baking.strawbericreations.com.bakingrecipes.Model.Steps;
 import baking.strawbericreations.com.bakingrecipes.R;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static baking.strawbericreations.com.bakingrecipes.UserInterface.RecipeActivity.SELECTED_RECIPES;
 
@@ -30,9 +32,12 @@ public class DetailFragment extends Fragment {
 
     ArrayList<String> recipe;
 
+    @BindView(R.id.detail_recycler)
     RecyclerView detailRecycler;
+
+    @BindView(R.id.recipe_detail_text)
     TextView detailtext;
-    static String STACK_RECIPE_DETAIL = "STACK_RECIPE_DETAIL";
+
 
     private ArrayList<Steps> stepList = new ArrayList<>();
     private ArrayList<Ingredients> ingList = new ArrayList<>();
@@ -46,10 +51,7 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-
-        detailRecycler = (RecyclerView) rootView.findViewById(R.id.detail_recycler);
-
-        detailtext =(TextView) rootView.findViewById(R.id.recipe_detail_text);
+        ButterKnife.bind(this,rootView);
 
         recipe = new ArrayList<>();
         Bundle b = getActivity().getIntent().getExtras();
@@ -109,7 +111,7 @@ public class DetailFragment extends Fragment {
         System.out.println("setting the adpater");
         mRecipeDetailAdapter.notifyDataSetChanged();
         System.out.println("notify change");
-        // Inflate the layout for this fragment
+
 
 
         return rootView;

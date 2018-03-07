@@ -26,10 +26,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
     String recipe_name = "";
     static String STACK_RECIPE_DETAIL = "STACK_RECIPE_DETAIL";
     static String STACK_RECIPE_STEP_DETAIL = "STACK_RECIPE_STEP_DETAIL";
-    static String UPDATE_ACTION = "UPDATE_ACTION";
+
     Bundle extras;
     String Ingredients;
-    String str;
+
     private ArrayList<Ingredients> ingList = new ArrayList<>();
     private ArrayList<String> widitem = new ArrayList<>();
 
@@ -115,7 +115,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     private void updateWidget() {
         Intent i = new Intent(this, BakingWidget.class);
-        //  i.setAction(BakingWidget.UPDATE_ACTION);
         Toast.makeText(getApplicationContext(), "from the activity",
                 Toast.LENGTH_SHORT).show();
         i.putExtra("INGREDIENTS", toPrint);
