@@ -27,7 +27,7 @@ public class RecipeActivity extends AppCompatActivity {
     @NonNull
     public IdlingResource getIdlingResource() {
         if (mIdlingResource == null) {
-            mIdlingResource = new MyIdlingResources();
+            mIdlingResource = new MyIdlingResources(System.currentTimeMillis()- 1);
         }
         return mIdlingResource;
     }
@@ -42,7 +42,6 @@ public class RecipeActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle("Baking Recipe");
-
 
     }
 }

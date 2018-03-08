@@ -3,12 +3,15 @@ package baking.strawbericreations.com.bakingrecipes;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import baking.strawbericreations.com.bakingrecipes.IdlingResources.MyIdlingResources;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.RecipeActivity;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.RecipeDetailActivity;
 import static android.support.test.espresso.Espresso.onView;
@@ -21,6 +24,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.not;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.text.format.DateUtils;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -32,14 +38,13 @@ public class IntentTest {
     @Rule
     public IntentsTestRule<RecipeActivity> mActivityTestRule = new IntentsTestRule<RecipeActivity>(RecipeActivity.class);
 
-    private IdlingResource mIdlingResource;
 
     @Before
-    public void registerIdlingResource() {
-        mIdlingResource = mActivityTestRule.getActivity().getIdlingResource();
-        // To prove that the test fails, omit this call:
-        Espresso.registerIdlingResources(mIdlingResource);
+    public void resetTimeout() {
+        IdlingPolicies.setMasterPolicyTimeout(60, TimeUnit.SECONDS);
+        IdlingPolicies.setIdlingResourceTimeout(26, TimeUnit.SECONDS);
     }
+
 
     @Before
     public void stubAllExternalIntents() {
@@ -49,16 +54,29 @@ public class IntentTest {
     }
 
     @Test
-    public void checkIntent_RecipeDetailActivity() {
-        //   onView(withId(R.id.recycler_view)).check(ViewAssertions.matches(isDisplayed()));
-        onView(withId(R.id.recycler_recipe)).perform(RecyclerViewActions.actionOnItemAtPosition(1,click()));
-        intended(hasComponent(RecipeDetailActivity.class.getName()));
+    public void waitFor5Seconds() {
+        waitFor(5);
+    }
 
+    @Test
+    public void waitFor65Seconds() {
+        waitFor(65);
     }
-    @After
-    public void unregisterIdlingResource() {
-        if (mIdlingResource != null) {
-            Espresso.unregisterIdlingResources(mIdlingResource);
-        }
+
+    private void waitFor(int waitingTime) {
+
+        onView(withId(R.id.recycler_recipe)).perform(RecyclerViewActions.actionOnItemAtPosition(1,click()));
+
+        // Make sure Espresso does not time out
+        IdlingPolicies.setMasterPolicyTimeout(waitingTime * 2, TimeUnit.SECONDS);
+        IdlingPolicies.setIdlingResourceTimeout(waitingTime * 2, TimeUnit.SECONDS);
+
+        MyIdlingResources idlingResource = new MyIdlingResources(DateUtils.SECOND_IN_MILLIS * waitingTime);
+        Espresso.registerIdlingResources(idlingResource);
+
+        intended(hasComponent(RecipeDetailActivity.class.getName()));
+        Espresso.unregisterIdlingResources(idlingResource);
     }
+
+
 }

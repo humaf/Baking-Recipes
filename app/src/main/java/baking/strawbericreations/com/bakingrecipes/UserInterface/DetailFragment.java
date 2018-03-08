@@ -9,23 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
 import baking.strawbericreations.com.bakingrecipes.Adapters.RecipeDetailAdapter;
 import baking.strawbericreations.com.bakingrecipes.Model.Ingredients;
-
 import baking.strawbericreations.com.bakingrecipes.Model.Steps;
 import baking.strawbericreations.com.bakingrecipes.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import static baking.strawbericreations.com.bakingrecipes.UserInterface.RecipeActivity.SELECTED_RECIPES;
 
 public class DetailFragment extends Fragment {
@@ -58,7 +52,6 @@ public class DetailFragment extends Fragment {
         int id = b.getInt("Id");
         System.out.println("value in frgad id"+ id);
         String ing = (String) b.getSerializable("Ingredients");
-
 
         try {
             JSONArray ingj = new JSONArray(ing);
@@ -111,8 +104,6 @@ public class DetailFragment extends Fragment {
         System.out.println("setting the adpater");
         mRecipeDetailAdapter.notifyDataSetChanged();
         System.out.println("notify change");
-
-
 
         return rootView;
     }

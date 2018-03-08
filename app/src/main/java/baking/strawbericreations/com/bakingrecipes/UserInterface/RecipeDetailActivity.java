@@ -1,11 +1,15 @@
 package baking.strawbericreations.com.bakingrecipes.UserInterface;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -101,7 +105,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(recipe_name);
-
         updateWidget();
     }
 
@@ -113,8 +116,22 @@ public class RecipeDetailActivity extends AppCompatActivity {
         Log.i("title", recipe_name);
     }
 
+   @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+       switch (item.getItemId()) {
+           // Respond to the action bar's Up/Home button
+           case android.R.id.home:
+               NavUtils.navigateUpFromSameTask(this);
+               return true;
+       }
+
+       return super.onOptionsItemSelected(item);
+    }
+
     private void updateWidget() {
         Intent i = new Intent(this, BakingWidget.class);
+
         Toast.makeText(getApplicationContext(), "from the activity",
                 Toast.LENGTH_SHORT).show();
         i.putExtra("INGREDIENTS", toPrint);

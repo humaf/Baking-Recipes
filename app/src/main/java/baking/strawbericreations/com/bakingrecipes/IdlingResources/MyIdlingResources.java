@@ -1,9 +1,9 @@
 package baking.strawbericreations.com.bakingrecipes.IdlingResources;
 
+
 import java.util.concurrent.atomic.AtomicBoolean;
+import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingResource;
-
-
 
 /**
  * Created by redrose on 2/27/18.
@@ -11,10 +11,19 @@ import android.support.test.espresso.IdlingResource;
 
 public class MyIdlingResources implements IdlingResource {
 
+    private final long startTime;
+    private final long waitingTime;
+
+
     private  volatile IdlingResource.ResourceCallback mResourceCallback;
 
     private AtomicBoolean mIsIdleNow = new AtomicBoolean(true);
 
+
+    public MyIdlingResources(long waitingTime) {
+        this.startTime = System.currentTimeMillis();
+        this.waitingTime = waitingTime;
+    }
 
     @Override
     public String getName() {
@@ -23,7 +32,13 @@ public class MyIdlingResources implements IdlingResource {
 
     @Override
     public boolean isIdleNow() {
-        return mIsIdleNow.get();
+        long elapsed = System.currentTimeMillis() - startTime;
+        boolean idle = (elapsed >= waitingTime);
+        if (idle) {
+            mResourceCallback.onTransitionToIdle();
+        }
+
+        return idle;
     }
 
     @Override
@@ -37,4 +52,5 @@ public class MyIdlingResources implements IdlingResource {
             mResourceCallback.onTransitionToIdle();
         }
     }
+
 }

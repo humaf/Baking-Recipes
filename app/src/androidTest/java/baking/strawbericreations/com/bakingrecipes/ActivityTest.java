@@ -3,12 +3,17 @@ package baking.strawbericreations.com.bakingrecipes;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
+import android.text.format.DateUtils;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.concurrent.TimeUnit;
 
 import baking.strawbericreations.com.bakingrecipes.IdlingResources.MyIdlingResources;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.RecipeActivity;
@@ -29,34 +34,36 @@ public class ActivityTest  {
     @Rule
     public ActivityTestRule<RecipeActivity> mActivityTestRule = new ActivityTestRule<>(RecipeActivity.class);
 
-    private MyIdlingResources mIdlingResource;
 
     @Before
-    public void registerIdlingResource() {
-        mIdlingResource = (MyIdlingResources) mActivityTestRule.getActivity().getIdlingResource();
-        // To prove that the test fails, omit this call:
-        Espresso.registerIdlingResources(mIdlingResource);
+    public void resetTimeout() {
+        IdlingPolicies.setMasterPolicyTimeout(60, TimeUnit.SECONDS);
+        IdlingPolicies.setIdlingResourceTimeout(26, TimeUnit.SECONDS);
     }
 
+
+@Test
+public void waitFor5Seconds() {
+    waitFor(5);
+}
+
     @Test
-    public void checkText_RecipeActivity() {
+    public void waitFor65Seconds() {
+        waitFor(65);
+    }
+
+
+    private void waitFor(int waitingTime) {
+
         onView(withId(R.id.recycler_recipe)).perform(RecyclerViewActions.scrollToPosition(2));
+        // Make sure Espresso does not time out
+        IdlingPolicies.setMasterPolicyTimeout(waitingTime * 2, TimeUnit.SECONDS);
+        IdlingPolicies.setIdlingResourceTimeout(waitingTime * 2, TimeUnit.SECONDS);
+
+        MyIdlingResources idlingResource = new MyIdlingResources(DateUtils.SECOND_IN_MILLIS * waitingTime);
+        Espresso.registerIdlingResources(idlingResource);
+
         onView(withText("Yellow Cake")).check(matches(isDisplayed()));
+        Espresso.unregisterIdlingResources(idlingResource);
     }
-
-    @Test
-    public void checkPlayerViewIsVisible_RecipeDetailActivity1() {
-
-        onView(withId(R.id.recycler_recipe)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
-        onView(withId(R.id.detail_recycler)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
-
-    }
-
-    @After
-    public void unregisterIdlingResource() {
-        if (mIdlingResource != null) {
-            Espresso.unregisterIdlingResources(mIdlingResource);
-        }
-    }
-
 }
