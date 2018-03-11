@@ -33,7 +33,6 @@ import butterknife.ButterKnife;
 
 public class RecipeFragment extends Fragment
 {
-
     String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     private RecipeAdapter adapter ;
@@ -141,7 +140,7 @@ public class RecipeFragment extends Fragment
                 String recipeName = (res.optString("name"));
                 Log.i("nameeeeeee",recipeName);
                 item.setName(recipeName);
-                 ing = (res.optJSONArray("ingredients"));
+                    ing = (res.optJSONArray("ingredients"));
                 Log.i("ingggge",ing.toString());
                 item.setIngredients(ing);
                 steps = (res.optJSONArray("steps"));
@@ -161,7 +160,7 @@ public class RecipeFragment extends Fragment
             System.out.println("--------------------------time" + Parsetime);
 
             Log.i( "","request end " + totaltime );
-            Log.i("", "parse time "  +Parsetime);
+            Log.i("", "parse time "  + Parsetime);
         return recipeList;
 }
       protected void onPostExecute(ArrayList<Recipe> result) {

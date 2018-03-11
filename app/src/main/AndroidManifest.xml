@@ -25,7 +25,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".UserInterface.RecipeDetailActivity"
-            android:configChanges="orientation|screenSize"
             android:parentActivityName=".UserInterface.RecipeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -17,8 +17,6 @@ import butterknife.ButterKnife;
 public class RecipeActivity extends AppCompatActivity {
     static String SELECTED_RECIPES="Selected_Recipes";
 
-
-
     String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     private MyIdlingResources mIdlingResource;

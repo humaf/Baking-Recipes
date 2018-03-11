@@ -114,6 +114,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putString("Recipe name", recipe_name);
         Log.i("title", recipe_name);
+
     }
 
    @Override
@@ -136,5 +137,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
         i.putExtra("INGREDIENTS", toPrint);
         sendBroadcast(i);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        savedInstanceState.getString("recipe_name");
+
     }
 }
