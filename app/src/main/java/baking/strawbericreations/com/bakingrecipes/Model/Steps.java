@@ -8,6 +8,16 @@ import java.io.Serializable;
 
 public class Steps implements Serializable {
 
+    private Integer id;
+
+    private String shortDescription;
+
+    private String videoURL;
+
+    private String description;
+
+    private String thumbnailURL;
+
     public Integer getId() {
         return id;
     }
@@ -16,7 +26,7 @@ public class Steps implements Serializable {
         this.id = id;
     }
 
-    private Integer id;
+
 
     public String getShortDescription() {
         return shortDescription;
@@ -26,9 +36,9 @@ public class Steps implements Serializable {
         this.shortDescription = shortDescription;
     }
 
-    private String shortDescription;
 
-    private String videoURL;
+
+
 
     public String getDescription() {
         return description;
@@ -38,7 +48,7 @@ public class Steps implements Serializable {
         this.description = description;
     }
 
-    private String description;
+
 
     public String getVideoURL() {
         return videoURL;
@@ -58,6 +68,5 @@ public class Steps implements Serializable {
         this.thumbnailURL = thumbnailURL;
     }
 
-    private String thumbnailURL;
 
 }

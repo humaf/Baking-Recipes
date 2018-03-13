@@ -3,6 +3,7 @@ package baking.strawbericreations.com.bakingrecipes.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +14,19 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import baking.strawbericreations.com.bakingrecipes.Model.Recipe;
+import baking.strawbericreations.com.bakingrecipes.Model.Steps;
 import baking.strawbericreations.com.bakingrecipes.R;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.OnItemClickListener;
 import baking.strawbericreations.com.bakingrecipes.UserInterface.RecipeDetailActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Optional;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 
@@ -48,14 +55,31 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     @Override
     public void onBindViewHolder(RecipeHolder holder, int position) {
      final  Recipe recipe = recipeItemList.get(position);
+   //     final Steps step = stepItemList.get(position);
        System.out.println("------------------------" + position);
         String imageUrl = recipe.getImage();
-       if(imageUrl!=null){
-           Uri builtUri = Uri.parse(imageUrl).buildUpon().build();
+          JSONArray stepitem = recipe.getSteps();
+            JSONObject jobj = stepitem.optJSONObject(position);
+        String imageUrl1="";
+        try {
+            imageUrl1 = jobj.getString("thumbnailURL");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-           Picasso.with(getContext()).load(builtUri).into(holder.recipeImageView);
-       }
+        Log.i("","value of imageUrl1" + imageUrl1);
+        System.out.println(" null or empty lets see" + imageUrl1);
 
+        if (imageUrl != null) {
+            Uri builtUri = Uri.parse(imageUrl).buildUpon().build();
+            Picasso.with(getContext()).load(builtUri).into(holder.recipeImageView);
+        }
+  /*   else if(imageUrl1 != "") {
+            Uri builtUri1 = Uri.parse(imageUrl1).buildUpon().build();
+        Picasso.with(getContext()).load(builtUri1).into(holder.recipeImageView);
+        //Getting Illegal State exception on line 80.
+        }
+*/
         holder.title.setText(recipe.getName());
       Log.i("-----------",recipe.getName().toString());
         holder.setOnItemClickListener(new OnItemClickListener() {
@@ -88,8 +112,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     public  static  class RecipeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.thumb_Image)
-        ImageView recipeImageView;
+  @Nullable  @BindView(R.id.thumb_Image)
+       ImageView recipeImageView;
         @BindView(R.id.recipeText)
         public TextView title;
         public int position;

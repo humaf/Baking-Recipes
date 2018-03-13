@@ -43,11 +43,13 @@ import butterknife.ButterKnife;
 
 public class Steps_fragment extends Fragment {
 
-
-
     private final String STATE_PLAYBACK_POSITION ="playbackPosition";
 
     private long playbackPosition;
+
+    private boolean playwhenReady;
+
+    private int itemPosition ;
 
     String TAG = "";
 
@@ -70,6 +72,8 @@ public class Steps_fragment extends Fragment {
     Steps item;
     View rootView;
     int pos;
+    boolean rotated = false;
+
 
     public Steps_fragment() {
         // Required empty public constructor
@@ -83,19 +87,19 @@ public class Steps_fragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_steps, container, false);
         ButterKnife.bind(this, rootView);
 
-
         mainHandler = new Handler();
         bandwidthMeter = new DefaultBandwidthMeter();
         simpleExoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_View);
         simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
-
 
         if (savedInstanceState != null) {
             // Restore last state for checked position.
 
           playbackPosition = savedInstanceState.getLong(STATE_PLAYBACK_POSITION);
             Log.i("TAG","poooooooooositiooooo" + playbackPosition);
-
+           itemPosition = savedInstanceState.getInt("orientation");
+            Log.i("TAG","Whats the position oncreate " + itemPosition);
+            rotated = savedInstanceState.getBoolean("is rotated");
         }
         recipe = new ArrayList<>();
         Bundle b = getActivity().getIntent().getExtras();
@@ -125,31 +129,33 @@ public class Steps_fragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
+
+            //Value here is coming diffeent i need to change
             pos = bundle.getInt("poos");
             System.out.println("if it is same or not " + pos);
+            Log.i(TAG,"position same or not in bundle" + pos);
+          //  pos = itemPosition;
+            if (rotated) {
+                pos = itemPosition;
+            }
             String vii = stepList.get(pos).getVideoURL();
             String des = stepList.get(pos).getDescription();
             String imageUrl = stepList.get(pos).getThumbnailURL();
             if (imageUrl != "") {
                 Uri builtUri = Uri.parse(imageUrl).buildUpon().build();
-
                 Picasso.with(getContext()).load(builtUri).into(thumbImage);
             }
-            int id = stepList.get(pos).getId();
+        int id = stepList.get(pos).getId();
             System.out.println("iiiiiiiiiiiiiiiii" + id);
             System.out.println("description coming " + des);
             steps_details.setText(des);
             setVideo(vii);
         }
-
-
         System.out.println("check null or not" + stepList.get(pos).getId());
 
         previous.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
                 if (stepList.get(pos).getId() > 0) {
-
                     if (player != null) {
                         player.stop();
                     }
@@ -184,11 +190,14 @@ public class Steps_fragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
+        itemPosition = pos;
+        rotated = true;
         outState.putLong(STATE_PLAYBACK_POSITION, playbackPosition);
-
+        outState.putBoolean("play when ready",playwhenReady);
+        outState.putBoolean("is rotated",rotated);
+        outState.putInt("orientation",itemPosition);
+        Log.i(TAG,"position when rotating" + itemPosition);
         super.onSaveInstanceState(outState);
-
     }
 
     private void setVideo(String vstring) {
@@ -223,7 +232,7 @@ public class Steps_fragment extends Fragment {
             String userAgent = Util.getUserAgent(getContext(), "Baking App");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             player.prepare(mediaSource);
-            player.setPlayWhenReady(true);
+            player.setPlayWhenReady(playwhenReady);
             playbackPosition = 0;
         }
     }
@@ -266,8 +275,8 @@ public class Steps_fragment extends Fragment {
         super.onPause();
         if (player != null) {
             player.stop();
-
             playbackPosition = Math.max(0, simpleExoPlayerView.getPlayer().getCurrentPosition());
+            playwhenReady = simpleExoPlayerView.getPlayer().getPlayWhenReady();
             player.release();
         }
     }

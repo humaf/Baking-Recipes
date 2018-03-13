@@ -113,7 +113,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("Recipe name", recipe_name);
-        Log.i("title", recipe_name);
+//        Log.i("title", recipe_name);
 
     }
 

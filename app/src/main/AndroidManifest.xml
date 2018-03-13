@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
         <activity android:name=".UserInterface.RecipeActivity"
-                android:configChanges="orientation|screenSize"
+
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

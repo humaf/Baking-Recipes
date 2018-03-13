@@ -10,6 +10,7 @@ android:id="@+id/fragment_detail">
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:scrollbarStyle="insideInset"
+    android:id="@+id/detail_scroll"
     style="@android:style/Widget.Holo.ScrollView"
     android:clipToPadding="false"
     android:scrollIndicators="top|bottom"

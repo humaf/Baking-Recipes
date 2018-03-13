@@ -53,22 +53,22 @@ public class BakingWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String action = intent.getAction();
         Bundle extras = intent.getExtras();
-        String title1 = extras.getString("INGREDIENTS");//this value does not come through
+        if(extras!=null) {
+            String title1 = extras.getString("INGREDIENTS");//this value does not come through
 
 
-        ComponentName provider = new ComponentName(context.getApplicationContext(), BakingWidget.class);
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget);
-        AppWidgetManager manager = AppWidgetManager.getInstance(context.getApplicationContext());
+            ComponentName provider = new ComponentName(context.getApplicationContext(), BakingWidget.class);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget);
+            AppWidgetManager manager = AppWidgetManager.getInstance(context.getApplicationContext());
 
 
-        views.setTextViewText(R.id.appwidget_text,title1);
+            views.setTextViewText(R.id.appwidget_text, title1);
 
-        //Update the widget
-        manager.updateAppWidget(provider, views);
+            //Update the widget
+            manager.updateAppWidget(provider, views);
 
-
+        }
         //  super.onReceive(context, intent);
     }
 }
