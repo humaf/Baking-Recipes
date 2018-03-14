@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,9 +72,9 @@ public class Steps_fragment extends Fragment {
     private OnDetailItemListener detailItemListener;
     Steps item;
     View rootView;
+    String vii;
     int pos;
     boolean rotated = false;
-
 
     public Steps_fragment() {
         // Required empty public constructor
@@ -100,6 +101,7 @@ public class Steps_fragment extends Fragment {
            itemPosition = savedInstanceState.getInt("orientation");
             Log.i("TAG","Whats the position oncreate " + itemPosition);
             rotated = savedInstanceState.getBoolean("is rotated");
+            playwhenReady = savedInstanceState.getBoolean("play when ready");
         }
         recipe = new ArrayList<>();
         Bundle b = getActivity().getIntent().getExtras();
@@ -129,16 +131,14 @@ public class Steps_fragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-
             //Value here is coming diffeent i need to change
             pos = bundle.getInt("poos");
             System.out.println("if it is same or not " + pos);
             Log.i(TAG,"position same or not in bundle" + pos);
-          //  pos = itemPosition;
             if (rotated) {
                 pos = itemPosition;
             }
-            String vii = stepList.get(pos).getVideoURL();
+             vii = stepList.get(pos).getVideoURL();
             String des = stepList.get(pos).getDescription();
             String imageUrl = stepList.get(pos).getThumbnailURL();
             if (imageUrl != "") {
@@ -201,6 +201,7 @@ public class Steps_fragment extends Fragment {
     }
 
     private void setVideo(String vstring) {
+        simpleExoPlayerView.setVisibility(View.VISIBLE);
         if (!vstring.isEmpty()) {
             Log.i("coming till this point", vstring);
             initializePlayer(Uri.parse(vstring));
@@ -213,6 +214,7 @@ public class Steps_fragment extends Fragment {
             }
         } else {
             player = null;
+            simpleExoPlayerView.setVisibility(View.INVISIBLE);
             Toast novideo = Toast.makeText(getContext(), "No video available for this step", Toast.LENGTH_LONG);
             novideo.show();
         }
@@ -281,4 +283,9 @@ public class Steps_fragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializePlayer(Uri.parse(vii));
+    }
 }

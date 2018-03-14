@@ -74,7 +74,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
             Uri builtUri = Uri.parse(imageUrl).buildUpon().build();
             Picasso.with(getContext()).load(builtUri).into(holder.recipeImageView);
         }
-  /*   else if(imageUrl1 != "") {
+  /* else if(imageUrl1 != "") {
             Uri builtUri1 = Uri.parse(imageUrl1).buildUpon().build();
         Picasso.with(getContext()).load(builtUri1).into(holder.recipeImageView);
         //Getting Illegal State exception on line 80.
