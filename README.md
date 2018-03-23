@@ -15,9 +15,9 @@ This app has following features
 
 * This application helps user with the video guided steps for the recipes.
 
-* This application is responsive that is it works well both on phones and tablets.
+* This application is responsive, that is it works well both on phones and tablets.
 
-* Contains a home screen widget with displays the recipe ingredients.
+* Contains a home screen widget which displays the recipe ingredients.
 
 ## Screens
 
