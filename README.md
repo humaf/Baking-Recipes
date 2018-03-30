@@ -1,5 +1,7 @@
 # Baking Recipes
-This is the third app for Udacity's Android Developer Nanodegree. I built this application from scratch.Some of the things I used for building this app are
+This is the third app for Udacity's Android Developer Nanodegree. I built this application from scratch.Some of the things I 
+
+used for building this app are
 
 * Fragments
 
@@ -17,7 +19,7 @@ This is the third app for Udacity's Android Developer Nanodegree. I built this a
  
  * Running Espresso test was also a bit challenging.
  
- All in all I learnt a lot doing this project.I am more confident in my skills as a developer.
+ All in all I learnt a lot doing this project,I am more confident in my skills as a developer after doing this project.
 
 
 ## Features
