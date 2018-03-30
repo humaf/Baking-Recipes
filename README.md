@@ -21,6 +21,11 @@ used for building this app are
  
  All in all I learnt a lot doing this project,I am more confident in my skills as a developer after doing this project.
 
+## Android Developer Nanodegree
+
+![nano](https://user-images.githubusercontent.com/16161998/38155734-2509d56e-342e-11e8-95e5-db0524af91e1.png)
+
+
 
 ## Features
 
