@@ -9,6 +9,17 @@ This is the third app for Udacity's Android Developer Nanodegree. I built this a
 
 * Espresso
 
+## Challenges
+ 
+ * This was my first time using ExoPlayer,I had to dig in the documentation a lot to make it working.
+ 
+ * I  created home screen widget for the first time for this app so I had to see a lot of tutorials and also documentation.
+ 
+ * Running Espresso test was also a bit challenging.
+ 
+ All in all I learnt a lot doing this project.I am more confident in my skills as a developer.
+
+
 ## Features
 
 This app has following features
